@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { ByCapitalPageComponent } from './pages/by-capital-page/by-capital-page.component';
 import { CountryLayoutComponent } from './layouts/country-layout/country-layout.component';
 
-export  const countryRoutes: Routes = [
+export const countryRoutes: Routes = [
   {
     path: '',
     component: CountryLayoutComponent,
@@ -15,11 +15,26 @@ export  const countryRoutes: Routes = [
           ),
       },
       {
+        path: 'by-country',
+        loadComponent() {
+          return import('./pages/by-country-page/by-country-page.component');
+        },
+      },
+      {
+        path: 'by-region',
+        loadComponent: () =>
+          import('./pages/by-region-page/by-region-page.component'),
+      },
+      {
+        path: 'by/:code',
+        loadComponent: () =>
+          import('./pages/countryPage/countryPage.component'),
+      },
+      {
         path: '**',
         redirectTo: 'by-capital',
       },
     ],
   },
-
 ];
 export default countryRoutes;

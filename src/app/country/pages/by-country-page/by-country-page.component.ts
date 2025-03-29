@@ -4,10 +4,6 @@ import { CountryListComponent } from "../../components/country-list/country-list
 
 @Component({
   imports: [CountrySearchInputComponent, CountryListComponent],
-  templateUrl: './by-capital-page.component.html',
+  templateUrl: './by-country-page.component.html',
 })
-export class ByCapitalPageComponent {
-  handleValue(event: string){
-    console.log(event);
-  }
-}
+export default class ByCountryPageComponent { }
