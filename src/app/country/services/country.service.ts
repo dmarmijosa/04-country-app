@@ -20,10 +20,7 @@ export class CountryService {
       .pipe(
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
         catchError((error) => {
-          console.log(`Error fetching `, error);
-          return throwError(
-            () => new Error('No se pudo obtener información con ese query')
-          );
+          return this.errorMessage;
         })
       );
   }
@@ -35,12 +32,14 @@ export class CountryService {
       .pipe(
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
         catchError((error) => {
-          console.log(`Error fetching `, error);
-          return throwError(
-            () => new Error('No se pudo obtener información con ese query')
-          );
+          return this.errorMessage;
         })
       );
   }
 
+  get errorMessage() {
+    return throwError(
+      () => new Error('No se pudo obtener información con ese query')
+    );
+  }
 }
