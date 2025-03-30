@@ -38,6 +38,20 @@ export class CountryService {
       );
   }
 
+  searchByCountryByAlphaCode(code: string): Observable<Country> {
+    code = code.toLowerCase();
+    return this.http
+      .get<RESTCountry[]>(`${environment.rest_api}/alpha/${code}`)
+      .pipe(
+        map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
+        map(countries => countries.at(0)!),
+        catchError((error) => {
+          return this.errorMessage;
+        })
+      );
+  }
+
+
   get errorMessage() {
     return throwError(
       () => new Error('No se pudo obtener información con ese query')
