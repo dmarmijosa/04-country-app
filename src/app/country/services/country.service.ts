@@ -22,9 +22,25 @@ export class CountryService {
         catchError((error) => {
           console.log(`Error fetching `, error);
           return throwError(
-            () => new Error('No se pudo obtener países con ese query')
+            () => new Error('No se pudo obtener información con ese query')
           );
         })
       );
   }
+
+  searchByCountry(query: string): Observable<Country[]> {
+    query = query.toLowerCase();
+    return this.http
+      .get<RESTCountry[]>(`${environment.rest_api}/name/${query}`)
+      .pipe(
+        map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
+        catchError((error) => {
+          console.log(`Error fetching `, error);
+          return throwError(
+            () => new Error('No se pudo obtener información con ese query')
+          );
+        })
+      );
+  }
+
 }
