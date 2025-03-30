@@ -15,16 +15,20 @@ export class ByCapitalPageComponent {
   isError = signal<string | null>(null);
   countries = signal<Country[]>([]);
 
-  handleValue(event: string) {
-    if(this.isLoading()) return;
-
+  handleValue(query: string) {
+    if (this.isLoading()) return;
     this.isLoading.set(true);
     this.isError.set(null);
-    this.countryService
-      .searchByCapital(event)
-      .subscribe((countries) =>{
+    this.countryService.searchByCapital(query).subscribe({
+      next: (countries) => {
         this.isLoading.set(false);
         this.countries.set(countries);
-      });
+      },
+      error: (error) => {
+        this.isLoading.set(false);
+        this.countries.set([]);
+        this.isError.set(error);
+      },
+    });
   }
 }
