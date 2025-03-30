@@ -5,6 +5,7 @@
     [placeholder]="placeholder()"
     #txtSearch
     (keyup.enter)="onSearch(txtSearch.value)"
+    [disabled]="loading()"
     autofocus/>
-    <button class="btn btn-primary" (click)="onSearch(txtSearch.value)">Buscar</button>
+    <button [disabled]="loading()" class="btn btn-primary" (click)="onSearch(txtSearch.value)">Buscar</button>
 </section>

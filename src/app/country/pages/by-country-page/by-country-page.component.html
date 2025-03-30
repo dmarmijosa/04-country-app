@@ -1,9 +1,12 @@
 <country-search-input
   placeholder="Buscar por país"
   (onSeachValue)="query.set($event)"
+  [loading]="countryResource.isLoading()"
 />
-@if(countryResource.error()){
-<h3 class="mt-3">{{ countryResource.error() }}</h3>
-}@if(countryResource.hasValue()){
-<country-list [countries]="countryResource.value()" />
-}
+
+<country-list
+  [countries]="countryResource.value() ?? []"
+  [errorMessage]="countryResource.error()"
+  [isEmpty]="countryResource.value.length === 0"
+  [isLoading]="countryResource.isLoading()"
+/>

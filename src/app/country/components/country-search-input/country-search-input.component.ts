@@ -8,6 +8,7 @@ import { Component, input, output } from '@angular/core';
 export class CountrySearchInputComponent {
 
   placeholder = input.required<string>();
+  loading = input(false);
   onSeachValue = output<string>();
   onSearch(value: string): void {
     this.onSeachValue.emit(value);
