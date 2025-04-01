@@ -34,7 +34,7 @@ export class CountryService {
   searchByCountry(query: string): Observable<Country[]> {
     query = query.toLowerCase();
     if (this.queryCacheByCountry.get(query))
-      return of(this.queryCachePorCapital.get(query)! ?? []);
+      return of(this.queryCacheByCountry.get(query)! ?? []);
 
     return this.http
       .get<RESTCountry[]>(`${environment.rest_api}/name/${query}`)
@@ -49,7 +49,7 @@ export class CountryService {
   }
 
   searchByCountryByAlphaCode(code: string): Observable<Country> {
-    code = code.toLowerCase();
+    code = code.toUpperCase();
     return this.http
       .get<RESTCountry[]>(`${environment.rest_api}/alpha/${code}`)
       .pipe(

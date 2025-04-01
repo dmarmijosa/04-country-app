@@ -2,6 +2,7 @@
   placeholder="Buscar por país"
   (onSeachValue)="query.set($event)"
   [loading]="countryResource.isLoading()"
+  [initialValue]="query()"
 />
 
 <country-list
