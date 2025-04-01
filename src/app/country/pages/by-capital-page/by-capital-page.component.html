@@ -2,6 +2,7 @@
   placeholder="Buscar por capital"
   (onSeachValue)="query.set($event)"
   [loading]="countryResource.isLoading()"
+  [debounceEffect]="500"
 />
 
 <country-list

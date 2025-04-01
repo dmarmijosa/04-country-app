@@ -4,8 +4,9 @@
     class="input input-bordered mr-2 w-56"
     [placeholder]="placeholder()"
     #txtSearch
-    (keyup.enter)="onSearch(txtSearch.value)"
+    (keyup.enter)="onSeachValue.emit(txtSearch.value)"
+    (keyup)="inputValue.set(txtSearch.value)"
     [disabled]="loading()"
     autofocus/>
-    <button [disabled]="loading()" class="btn btn-primary" (click)="onSearch(txtSearch.value)">Buscar</button>
+    <button [disabled]="loading()" class="btn btn-primary" (click)="onSeachValue.emit(txtSearch.value)">Buscar</button>
 </section>
