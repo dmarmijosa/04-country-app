@@ -12,6 +12,7 @@ import { Country } from '../interfaces/country.interface';
 export class CountryService {
   private http = inject(HttpClient);
   private queryCachePorCapital = new Map<string, Country[]>();
+  private queryCachebyCountry = new Map<string, Country[]>();
 
   searchByCapital(query: string): Observable<Country[]> {
     query = query.toLowerCase();
@@ -31,11 +32,15 @@ export class CountryService {
 
   searchByCountry(query: string): Observable<Country[]> {
     query = query.toLowerCase();
+    if (this.queryCachebyCountry.get(query))
+      return of(this.queryCachePorCapital.get(query)! ?? []);
+
     return this.http
       .get<RESTCountry[]>(`${environment.rest_api}/name/${query}`)
       .pipe(
-        delay(3000),
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
+        tap((country) => this.queryCachebyCountry.set(query, country)),
+        delay(2000),
         catchError((error) => {
           return this.errorMessage;
         })
