@@ -1,2 +1,20 @@
-
-<country-list [countries]="[]"/>
+<h1 class="text-2xl">Por región</h1>
+<div class="text-lg">selecciona una región</div>
+<section>
+  <div class="flex gap-5 mt-2">
+    @for (region of regions; track $index) {
+    <button
+      class="btn btn-outline"
+      [class.btn-primary]="region === selectedRegion()"
+      (click)="selectRegion(region)"
+    >
+      {{ region }}
+    </button>
+    }
+  </div>
+</section>
+<country-list
+  [countries]="regionResource.value() ?? []"
+  [errorMessage]="regionResource.error()"
+  [isLoading]="regionResource.isLoading()"
+/>

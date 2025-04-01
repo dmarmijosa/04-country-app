@@ -12,7 +12,8 @@ import { Country } from '../interfaces/country.interface';
 export class CountryService {
   private http = inject(HttpClient);
   private queryCachePorCapital = new Map<string, Country[]>();
-  private queryCachebyCountry = new Map<string, Country[]>();
+  private queryCacheByCountry = new Map<string, Country[]>();
+  private queryCacheByRegion = new Map<string, Country[]>();
 
   searchByCapital(query: string): Observable<Country[]> {
     query = query.toLowerCase();
@@ -32,14 +33,14 @@ export class CountryService {
 
   searchByCountry(query: string): Observable<Country[]> {
     query = query.toLowerCase();
-    if (this.queryCachebyCountry.get(query))
+    if (this.queryCacheByCountry.get(query))
       return of(this.queryCachePorCapital.get(query)! ?? []);
 
     return this.http
       .get<RESTCountry[]>(`${environment.rest_api}/name/${query}`)
       .pipe(
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
-        tap((country) => this.queryCachebyCountry.set(query, country)),
+        tap((country) => this.queryCacheByCountry.set(query, country)),
         delay(2000),
         catchError((error) => {
           return this.errorMessage;
@@ -54,6 +55,22 @@ export class CountryService {
       .pipe(
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
         map((countries) => countries.at(0)!),
+        catchError((error) => {
+          return this.errorMessage;
+        })
+      );
+  }
+
+  searchByRegion(query: string): Observable<Country[]> {
+    query = query.toLowerCase();
+    if (this.queryCacheByRegion.get(query))
+      return of(this.queryCacheByRegion.get(query)! ?? []);
+
+    return this.http
+      .get<RESTCountry[]>(`${environment.rest_api}/region/${query}`)
+      .pipe(
+        map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
+        tap((country) => this.queryCacheByRegion.set(query, country)),
         catchError((error) => {
           return this.errorMessage;
         })
