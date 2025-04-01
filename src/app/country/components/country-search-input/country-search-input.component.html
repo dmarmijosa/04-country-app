@@ -7,6 +7,7 @@
     (keyup.enter)="onSeachValue.emit(txtSearch.value)"
     (keyup)="inputValue.set(txtSearch.value)"
     [disabled]="loading()"
+    [value]="inputValue()"
     autofocus/>
     <button [disabled]="loading()" class="btn btn-primary" (click)="onSeachValue.emit(txtSearch.value)">Buscar</button>
 </section>
