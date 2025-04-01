@@ -2,10 +2,11 @@ import { Component, input } from '@angular/core';
 import { Country } from '../../interfaces/country.interface';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { LoadingComponent } from "../../../shared/componets/loading/loading.component";
 
 @Component({
   selector: 'country-list',
-  imports: [DecimalPipe, RouterLink],
+  imports: [DecimalPipe, RouterLink, LoadingComponent],
   templateUrl: './country-list.component.html',
 })
 export class CountryListComponent {

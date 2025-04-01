@@ -2,9 +2,12 @@ import { Component, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { CountryService } from '../../services/country.service';
+import { NotFoundComponent } from '../../../shared/componets/not-found/not-found.component';
+import { LoadingComponent } from "../../../shared/componets/loading/loading.component";
+import { CountryInformationComponent } from './country-information/country-information.component';
 
 @Component({
-  imports: [],
+  imports: [NotFoundComponent, LoadingComponent, CountryInformationComponent],
   templateUrl: './countryPage.component.html',
 })
 export default class CountryPageComponent {
