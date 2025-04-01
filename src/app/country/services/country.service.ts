@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { RESTCountry } from '../interfaces/rest-countries.interface';
-import { catchError, delay, map, Observable, throwError } from 'rxjs';
+import { catchError, delay, map, Observable, of, tap, throwError } from 'rxjs';
 import { CountryMapper } from '../mappers/country.mapper';
 import { Country } from '../interfaces/country.interface';
 
@@ -11,14 +11,18 @@ import { Country } from '../interfaces/country.interface';
 })
 export class CountryService {
   private http = inject(HttpClient);
+  private queryCachePorCapital = new Map<string, Country[]>();
 
-  constructor() {}
   searchByCapital(query: string): Observable<Country[]> {
     query = query.toLowerCase();
+    if (this.queryCachePorCapital.has(query))
+      return of(this.queryCachePorCapital.get(query) ?? []);
+
     return this.http
       .get<RESTCountry[]>(`${environment.rest_api}/capital/${query}`)
       .pipe(
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
+        tap((countries) => this.queryCachePorCapital.set(query, countries)),
         catchError((error) => {
           return this.errorMessage;
         })
@@ -44,13 +48,12 @@ export class CountryService {
       .get<RESTCountry[]>(`${environment.rest_api}/alpha/${code}`)
       .pipe(
         map((resp) => CountryMapper.mapRestCountrysToRestCountryArray(resp)),
-        map(countries => countries.at(0)!),
+        map((countries) => countries.at(0)!),
         catchError((error) => {
           return this.errorMessage;
         })
       );
   }
-
 
   get errorMessage() {
     return throwError(
